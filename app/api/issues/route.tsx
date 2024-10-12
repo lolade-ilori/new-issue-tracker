@@ -5,7 +5,7 @@ import prisma from "@/prisma/client";
 
 export async function POST (request: NextRequest) {
     const body =  await request.json()
-    const validation =  createIssuesSchema.safeParse(body)
+    const validation =  createIssuesSchema.safeParse(body) // So what if I send anther entity with the required items does it go/?
 
     if(!validation.success) 
         return NextResponse.json(validation.error.errors ,{status: 400})
