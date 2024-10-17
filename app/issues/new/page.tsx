@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Callout, TextArea, TextField } from '@radix-ui/themes'
+import { Button, Callout, Text, TextArea, TextField } from '@radix-ui/themes'
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import SimpleMDE from "react-simplemde-editor";
 import axios from 'axios';
@@ -8,15 +8,18 @@ import "easymde/dist/easymde.min.css";
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { BsInfoCircle } from 'react-icons/bs';
+import { zodResolver } from '@hookform/resolvers/zod';
+import createIssuesSchema from '@/app/validationSchema';
+import { z } from 'zod';
 
-interface IssueForm {
-  title: string,
-  description: string
-}
+// Letting zod infer this type (IssueForm) based on the schema
+type IssueForm = z.infer<typeof createIssuesSchema>; 
 
 const NewIssue = () => {
   const router = useRouter()
-  const { register, handleSubmit, control, formState: { errors } } = useForm<IssueForm>();
+  const { register, handleSubmit, control, formState: { errors } } = useForm<IssueForm>({
+    resolver: zodResolver(createIssuesSchema)
+  });
 
   const [error, setError] = useState("")
  
@@ -44,9 +47,9 @@ const NewIssue = () => {
         className='space-y-3'
       >
           <TextField.Root>
-              <TextField.Input placeholder='Title' {...register("title", {required: false})} />
+              <TextField.Input placeholder='Title' {...register("title", {required: true})} />
           </TextField.Root>
-          {errors.title && <span>This field is required</span>}
+          {errors.title && <Text color='red' as='p'>This field is required</Text>}
 
           <Controller 
             name= "description"
@@ -54,7 +57,7 @@ const NewIssue = () => {
             rules={{ required: true }}
             render={({field}) => <SimpleMDE placeholder='Description' {...field}/>}
           />
-          {errors.description && <span>This field is required</span>}
+          {errors.description && <Text color='red' as='p'>This field is required</Text>}
 
           
           <Button>Submit New Issue</Button>
