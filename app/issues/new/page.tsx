@@ -11,6 +11,7 @@ import { BsInfoCircle } from 'react-icons/bs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import createIssuesSchema from '@/app/validationSchema';
 import { z } from 'zod';
+import ErrorMessage from '@/app/components/ErrorMessage';
 
 // Letting zod infer this type (IssueForm) based on the schema
 type IssueForm = z.infer<typeof createIssuesSchema>; 
@@ -49,7 +50,7 @@ const NewIssue = () => {
           <TextField.Root>
               <TextField.Input placeholder='Title' {...register("title", {required: true})} />
           </TextField.Root>
-          {errors.title && <Text color='red' as='p'>This field is required</Text>}
+          <ErrorMessage>{errors.title?.message}</ErrorMessage>
 
           <Controller 
             name= "description"
@@ -57,7 +58,7 @@ const NewIssue = () => {
             rules={{ required: true }}
             render={({field}) => <SimpleMDE placeholder='Description' {...field}/>}
           />
-          {errors.description && <Text color='red' as='p'>This field is required</Text>}
+          <ErrorMessage >{errors.description?.message}</ErrorMessage>
 
           
           <Button>Submit New Issue</Button>
