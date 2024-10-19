@@ -2,10 +2,10 @@
 
 import { Button, Callout, Text, TextArea, TextField } from '@radix-ui/themes'
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import SimpleMDE from "react-simplemde-editor";
 import axios from 'axios';
 import "easymde/dist/easymde.min.css";
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { BsInfoCircle } from 'react-icons/bs';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,7 +13,12 @@ import createIssuesSchema from '@/app/validationSchema';
 import { z } from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
-import delay from 'delay';
+
+
+// Use dynamic import to lazy load the MarkdownEditor component
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
+  ssr: false, // This makes sure it only loads on the client-side
+});
 
 // Letting zod infer this type (IssueForm) based on the schema
 type IssueForm = z.infer<typeof createIssuesSchema>; 
