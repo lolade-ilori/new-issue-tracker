@@ -74,7 +74,7 @@ import { z } from 'zod'
           <ErrorMessage >{errors.description?.message}</ErrorMessage>
 
           
-          <Button disabled={isSubmitting}>Submit New Issue { isSubmitting && <Spinner /> } </Button>
+          <Button disabled={isSubmitting}>Submit New Issue { isSubmitting && <Spinner /> }</Button>
       </form>
     </div>
   )
