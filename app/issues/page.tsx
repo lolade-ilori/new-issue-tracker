@@ -40,4 +40,8 @@ const IssuePage = async () => {
   )
 }
 
+// To disable route caching
+export const dynamic = "force-dynamic"
+// export const revalidate = 60
+
 export default IssuePage
