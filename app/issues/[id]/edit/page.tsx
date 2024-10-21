@@ -1,8 +1,14 @@
 // 'use client'
 
 import prisma from '@/prisma/client'
-import IssueFormComponent from '../_components/page'
 import { notFound } from 'next/navigation'
+import dynamic from 'next/dynamic'
+import IssueFormSkeleton from '../../new/loading';
+
+const IssueFormComponent = dynamic(() => import('@/app/issues/_components/page'), {
+    ssr: false, // This makes sure it only loads on the client-side
+    loading: () => <IssueFormSkeleton />
+  });
 
 interface Props {
     params: {id: string}

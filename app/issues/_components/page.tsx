@@ -4,6 +4,7 @@ import ErrorMessage from '@/app/components/ErrorMessage'
 import Spinner from '@/app/components/Spinner'
 import createIssuesSchema from '@/app/validationSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import SimpleMDE from "react-simplemde-editor"
 import 'easymde/dist/easymde.min.css'
 import { Issue } from '@prisma/client'
 import { Callout, TextField, Button } from '@radix-ui/themes'
@@ -15,11 +16,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { BsInfoCircle } from 'react-icons/bs'
 import { z } from 'zod'
 
-// Use dynamic import to lazy load the MarkdownEditor component
-  const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
-    ssr: false, // This makes sure it only loads on the client-side
-  });
-  
+
   // Letting zod infer this type (IssueForm) based on the schema
   type IssueForm = z.infer<typeof createIssuesSchema>; 
 
