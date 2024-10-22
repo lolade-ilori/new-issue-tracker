@@ -1,6 +1,6 @@
 'use client'
 
-import { Issue } from '@prisma/client'
+import Spinner from '@/app/components/Spinner'
 import { AlertDialog, Button, Flex } from '@radix-ui/themes'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
@@ -9,11 +9,12 @@ import React, { useState } from 'react'
 const DeleteIssueBtn = ({issueId}: {issueId: number}) => {
     const router = useRouter()
     const [error, setError] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
   return (
     <>
         <AlertDialog.Root>
             <AlertDialog.Trigger>
-                <Button color='red'>Delete Issue</Button>
+                <Button color='red' disabled={isDeleting}>Delete Issue { isDeleting && <Spinner />}</Button>
             </AlertDialog.Trigger>
             <AlertDialog.Content >
                 <AlertDialog.Title>Confirm Deletion</AlertDialog.Title>
@@ -30,11 +31,13 @@ const DeleteIssueBtn = ({issueId}: {issueId: number}) => {
                     <AlertDialog.Action>
                         <Button variant="solid" color="red" onClick={async () => {
                             try {
+                                setIsDeleting(true)
                                 await axios.delete('/api/issues/' + issueId)
-                                router.push("/issues")
+                                router.push("/issues/list")
                                 router.refresh()  
                             } catch (error) {
                                 setError(true)
+                                setIsDeleting(false)
                             }
                         }}>
                             Delete Issue
