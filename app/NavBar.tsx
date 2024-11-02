@@ -5,9 +5,12 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 import { BsBugFill } from "react-icons/bs"
+import { useSession } from "next-auth/react"
+import { Box } from '@radix-ui/themes'
 
 const NavBar = () => {
     const currentPath = usePathname()
+    const {status, data: session} = useSession()
 
     const links = [
         {label: "Dashboard", href: "/"},
@@ -30,6 +33,16 @@ const NavBar = () => {
                     </li>)
             }
         </ul>
+
+        <Box>
+            {
+                status === "authenticated" && <Link href="/api/auth/signout">Login</Link>
+            }
+
+            {
+                status === "unauthenticated" && <Link href="/api/auth/signin">Login</Link>
+            }
+        </Box>
     </nav>
   )
 }
