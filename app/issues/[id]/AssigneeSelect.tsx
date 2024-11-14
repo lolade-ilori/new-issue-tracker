@@ -21,16 +21,17 @@ const AssigneeSelect = ({issue}: {issue: Issue}) => {
 
   if (error) return null
 
+  const assignIssue = (userId:string) => {
+    axios
+      .patch('/api/issues/' + issue.id, {assignedUserId: userId || null})
+      .catch(() => {
+        toast.error("Changes could not be saved")
+      })
+  }
 
   return (
     <>
-      <Select.Root defaultValue={issue.assignedUserId || ""} onValueChange={(userId) => {
-        axios
-          .patch('/api/issues/' + issue.id, {assignedUserId: userId || null})
-          .catch(() => {
-            toast.error("Changes could not be saved")
-          })
-      }}>
+      <Select.Root defaultValue={issue.assignedUserId || ""} onValueChange={assignIssue}>
         {/* @ts-ignore */}
         <Select.Trigger placeholder='Assign...'/>
         <Select.Content>
