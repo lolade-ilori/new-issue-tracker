@@ -8,8 +8,8 @@ import authOptions from "@/app/auth/authOptions";
 export async function POST (request: NextRequest) {
     const session = await getServerSession(authOptions)
 
-    if (!session) 
-        return NextResponse.json({}, {status: 401})
+    // if (!session) 
+    //     return NextResponse.json({}, {status: 401})
 
     const body =  await request.json()
     const validation =  issuesSchema.safeParse(body) // So what if I send anther entity with the required items does it go/?
