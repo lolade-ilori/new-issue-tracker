@@ -3,9 +3,24 @@ import { Table } from '@radix-ui/themes';
 import IssueStatusBadge from '../../components/IssueStatusBadge';
 import Link from '../../components/Link';
 import IssueToggle from './IssueToggle';
+import { useSearchParams } from 'next/navigation';
+import { Status } from '@prisma/client';
 
-const IssuePage = async () => {
-  const issues = await prisma.issue.findMany()
+interface Props {
+  searchParams: {status: Status}
+}
+
+const IssuePage = async ({searchParams}: Props) => {
+
+  // What does Object.values do
+  const statuses = Object.values(Status)
+  const status =  statuses.includes(searchParams.status) ? searchParams.status : undefined
+  console.log(statuses)
+  const issues = await prisma.issue.findMany({
+    where: {
+      status
+    }
+  })
   return (
     <div>
       <IssueToggle />

@@ -30,6 +30,7 @@ import { z } from 'zod'
     const [isSubmitting, setSubmitting] = useState(false)
   
     const onSubmit = handleSubmit(async (data) => {
+      console.log("create")
       try {
         setSubmitting(true)
         if (issue)
