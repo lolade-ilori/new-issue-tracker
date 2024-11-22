@@ -25,10 +25,16 @@ const IssuePage = async ({searchParams}: Props) => {
     {label: "Created", value: "creadtedAt", className: "hidden md:table-cell"}
   ]
 
+  // mapping the array of columns to an array of strings, so it becomes an array of strings calling the include function to check if the searchparams.orderBy value is in the array of strings, then return either the value or undefined
+  const orderBy = columns
+    .map(column => column.value).includes(searchParams.orderBy) 
+    ? {[searchParams.orderBy]: 'asc'} : undefined
+
   const issues = await prisma.issue.findMany({
     where: {
       status
-    }
+    },
+    orderBy
   })
   return (
     <div>
@@ -66,7 +72,7 @@ const IssuePage = async ({searchParams}: Props) => {
                   <IssueStatusBadge  status={issue.status}/>
                 </div>
               </Table.Cell>
-              <Table.Cell className='hidden md:table-cell'><IssueStatusBadge  status={issue.status}/></Table.Cell>
+              <Table.Cell className='hidden md:table-cell'><IssueStatusBadge status={issue.status}/></Table.Cell>
               <Table.Cell className='hidden md:table-cell'>{issue.creadtedAt.toDateString()}</Table.Cell>
             </Table.Row>)
           }
