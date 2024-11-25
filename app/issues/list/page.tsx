@@ -13,7 +13,6 @@ interface Props {
 
 const IssuePage = async ({searchParams}: Props) => {
 
-  console.log(searchParams)
 
   // What does Object.values do
   const statuses = Object.values(Status)
