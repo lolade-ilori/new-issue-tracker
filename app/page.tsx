@@ -3,6 +3,7 @@ import IssueSummary from "./IssueSummary";
 import LatestIssue from "./LatestIssue";
 import IssueCharts from "./IssueCharts";
 import { Flex, Grid } from "@radix-ui/themes";
+import { Metadata } from "next";
 
 
 
@@ -24,3 +25,8 @@ export default async function Home() {
   )
 }
  
+// Giving each page a proper title for SEO
+export const metadata: Metadata = {
+  title: "Issue Tracker - Dashboard",
+  description: "View a summary of project issues"
+}
