@@ -5,7 +5,7 @@ import IssueStatusFilter from './IssueStatusFilter'
 
 const IssueToggle = () => {
   return (
-    <Flex mb="5" justify="between">
+    <Flex justify="between">
         <IssueStatusFilter />
 
         <Button>
