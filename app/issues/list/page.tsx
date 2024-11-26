@@ -6,9 +6,10 @@ import IssueToggle from './IssueToggle';
 import { Issue, Status } from '@prisma/client';
 import NextLink from "next/link"
 import { ArrowUpIcon } from '@radix-ui/react-icons';
+import Pagination from '@/app/components/Pagination';
 
 interface Props {
-  searchParams: {status: Status, orderBy: keyof Issue}
+  searchParams: {status: Status, orderBy: keyof Issue, page: string}
 }
 
 const IssuePage = async ({searchParams}: Props) => {
@@ -17,6 +18,7 @@ const IssuePage = async ({searchParams}: Props) => {
   // What does Object.values do
   const statuses = Object.values(Status)
   const status =  statuses.includes(searchParams.status) ? searchParams.status : undefined
+  const where = {status}
 
   const columns: {label: string, value: keyof Issue, className?: string }[] = [
     {label: "Issue", value: "title"},
@@ -28,13 +30,21 @@ const IssuePage = async ({searchParams}: Props) => {
   const orderBy = columns
     .map(column => column.value).includes(searchParams.orderBy) 
     ? {[searchParams.orderBy]: 'asc'} : undefined
+  
+  const page = parseInt(searchParams.page) || 1
+  const pageSize = 10
 
   const issues = await prisma.issue.findMany({
-    where: {
-      status
-    },
-    orderBy
+    where,
+    orderBy,
+    skip: (page - 1) * pageSize,//This gives the number of records we should skip
+    take: pageSize //This is the number of records we want to fetch, NB: with skip and take query, we will get the issues for a given page
   })
+
+  //To also get the total number of issues
+  const issueCount = await prisma.issue.count({where}) 
+
+
   return (
     <div>
       <IssueToggle />
@@ -77,6 +87,7 @@ const IssuePage = async ({searchParams}: Props) => {
           }
         </Table.Body>
       </Table.Root>
+      <Pagination pageSize={pageSize} currentPage={page} itemCount={issueCount}/>
     </div>
   )
 }
@@ -86,3 +97,5 @@ export const dynamic = "force-dynamic"
 // export const revalidate = 60
 
 export default IssuePage
+
+// OUR PAGES SHOULD HAVE A SINGLE RESPOSNIBILTY, AND THAT IS LAYING OUT OUR COMPONENTS
