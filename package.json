@@ -19,6 +19,7 @@
     "@types/node": "22.7.5",
     "@types/react": "18.3.11",
     "@types/react-dom": "18.3.0",
+    "@xata.io/client": "^0.0.0-next.va121e4207b94bfe0a3c025fc00b247b923880930",
     "autoprefixer": "10.4.20",
     "axios": "^1.7.7",
     "classnames": "^2.3.2",
